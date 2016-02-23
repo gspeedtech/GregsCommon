@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GregsConsoleSplitCheck
+namespace GregsCommon
 {
-    public class TaxItem
+    public class TipItem
     {
         public int PartyId;
         public int DinerId;
         public double ItemTotal;
-        public double TaxPercent;
-        public double TaxAmount;
+        public double TipPercent;
+        public double TipAmount;
         public int Diviser;
     }
 }

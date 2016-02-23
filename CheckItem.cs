@@ -6,15 +6,25 @@ using System.Threading.Tasks;
 
 namespace GregsCommon
 {
-    // This project can output the Class library as a NuGet Package.
-    // To enable this option, right-click on the project and select the Properties menu item. In the Build tab select "Produce outputs on build".
-
     public class CheckItem
     {
         public int PartyId;
         public int DinerId;
         public string Type;
         public double Price;
-        public int Diviser;      
+        public int Diviser;
+
+        //public CheckItem()
+        //{
+        //    CheckItem Item = new CheckItem();
+        //    Item.PartyId = 0;
+        //    Item.DinerId = 0;
+        //    Item.Type = "None";
+        //    Item.Price = 1.00;
+        //    Item.Diviser = 1;
+
+        //}
     }
+
+
 }
