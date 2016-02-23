@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
+using System.Data;
 
 
-namespace GregsConsoleSplitCheck
+namespace GregsCommon
 {
     public class Check
     {
@@ -18,10 +20,71 @@ namespace GregsConsoleSplitCheck
             dinerTipItems = new List<TipItem>();
         }
 
-        //public Check(Check firstCheck)
-        //{
-        //    this.firstCheck = firstCheck;
-        //}
+        public static Check NewCheck()
+        {
+            Check NewCheck = new Check();
+            NewCheck.CheckID = 1;
+            NewCheck.CheckName = "First Check";
+            NewCheck.CheckTaxPercentage = .0725;
+            NewCheck.CheckTipPercentage = .18;
+            NewCheck.AddCheckItem(0, 1, "Entree", 19.96, 3);
+            NewCheck.AddCheckItem(0, 2, "Drink", 9.90, 2);
+            NewCheck.AddCheckItem(0, 3, "Dessert", 5.95);
+            NewCheck.AddCheckItem(1, 3, "Entree", 19.96, 3);
+            NewCheck.AddCheckItem(1, 2, "Drink", 9.90, 2);
+            NewCheck.AddCheckItem(1, 1, "Dessert", 5.95);
+            NewCheck.AddPartyTaxItems(NewCheck);
+            NewCheck.AddPartyTipItems(NewCheck);
+            NewCheck.AddDinerTaxItems(NewCheck);
+            NewCheck.AddDinerTipItems(NewCheck);
+            NewCheck.GetCheckTotals(NewCheck);
+
+            return NewCheck;
+        }
+
+        public static DataTable GetCheck(Check NewCheck)
+        {            
+
+            DataTable Check = new DataTable();
+            Check = CreateDataTable(NewCheck.items);
+
+            return Check;
+        }
+
+        public static DataTable CreateDataTable<T>(IEnumerable<T> list)
+        {
+            Type type = typeof(T);
+            var properties = type.GetFields();
+
+            DataTable dataTable = new DataTable();
+            foreach (FieldInfo info in properties)
+            {
+                dataTable.Columns.Add(new DataColumn(info.Name, Nullable.GetUnderlyingType(info.FieldType) ?? info.FieldType));
+            }
+
+            foreach (T entity in list)
+            {
+                object[] values = new object[properties.Length];
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(entity);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
+        }
+
+        public List<CheckItem> GetCheckItems(Check Check)
+        {
+            foreach (var Id in Check.items)
+            {
+                CheckItem checkItem = new CheckItem();
+                items.Add(checkItem);
+            }
+            return items;
+        }
 
         public void AddCheckItem(int PartyID, int DinerId, string Type, double Price)
         {
